@@ -5,7 +5,6 @@ import java.security.Provider;
 public class Office {
 
     public static void main(String[] args) throws SQLException {
-        updateDB();
 
         Option opt = Option.AddDepartment;
         Scanner sc = new Scanner(System.in);
@@ -16,8 +15,34 @@ public class Office {
             opt = Option.values()[sc.nextInt()];
             opt.action();
         }
+
+        checkEmployee();
     }
 
+    public static void checkEmployee() {
+        Service.createDB();
+        String url = "jdbc:h2:.\\Office";
+        Statement statement = null;
+        ResultSet rs;
+        try (Connection con = DriverManager.getConnection(url)) {
+            if (con != null) {
+                System.out.println("Connection opened");
+            } else {
+                System.out.println("Failed to make connection");
+            }
+            //Найдите ID сотрудника с именем Ann. Если такой сотрудник только один, то установите его департамент в HR.
+            statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            rs = statement.executeQuery("Select * from Employee");
+
+            while (rs.next()) {
+                System.out.println("Имя сотрудника: " + rs.getString("Name") + "\t" + "ID отдела: " + rs.getString("DEPARTMENTID"));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
         public static void updateDB()
         {
             Service.createDB();
