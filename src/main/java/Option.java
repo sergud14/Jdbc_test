@@ -76,9 +76,9 @@ public enum Option {
                         ResultSet.CONCUR_UPDATABLE
                 );
                 String str="A%";
-                //ResultSet rs= stm.executeQuery("Select ID, NAME as txt from Department");
-                stm.setString(1,str);
-                ResultSet rs=stm.executeQuery();
+                ResultSet rs= stm.executeQuery("Select ID, NAME as txt from Department");
+                //stm.setString(1,str);
+                //ResultSet rs=stm.executeQuery();
                 System.out.println("------------------------------------");
                 while(rs.next()){
                     System.out.println(rs.getInt("ID")+"\t"+rs.getString("name"));
@@ -97,8 +97,8 @@ public enum Option {
         void action() {
             try(Connection con = DriverManager.getConnection("jdbc:h2:.\\Office")){
                 Statement stm = con.createStatement();
-                ResultSet rs= stm.executeQuery("Select Employee.ID, Employee.Name,Department.Name as DepName from Employee join Department on Employee.DepartmentID=Department.ID");
-                //ResultSet rs= stm.executeQuery("Select Employee.ID, Employee.Name,Employee.DepartmentID as DepName from Employee");
+                //ResultSet rs= stm.executeQuery("Select Employee.ID, Employee.Name,Department.Name as DepName from Employee join Department on Employee.DepartmentID=Department.ID");
+                ResultSet rs= stm.executeQuery("Select Employee.ID, Employee.Name,Employee.DepartmentID as DepName from Employee");
                 System.out.println("------------------------------------");
                 ResultSetMetaData metaData= rs.getMetaData();
                 while(rs.next()){

@@ -1,9 +1,5 @@
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Service {
 
@@ -44,9 +40,14 @@ public class Service {
 
     public static void removeDepartment(Department d) {
         try (Connection con = DriverManager.getConnection("jdbc:h2:.\\Office")) {
-            PreparedStatement stm = con.prepareStatement("DELETE FROM Department WHERE ID=?");
+            PreparedStatement stm = con.prepareStatement("DELETE FROM Employee WHERE DEPARTMENTID=?");
             stm.setInt(1, d.departmentID);
             stm.executeUpdate();
+
+            stm = con.prepareStatement("DELETE FROM Department WHERE ID=?");
+            stm.setInt(1, d.departmentID);
+            stm.executeUpdate();
+
         } catch (Exception e) {
             System.out.println(e);
         }
